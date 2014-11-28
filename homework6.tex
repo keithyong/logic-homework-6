@@ -20,11 +20,66 @@
 \maketitle
 \pagebreak
 
+% ---------------------------------------------------------------
+% -------------------------- PROBLEM 1 --------------------------
+% ---------------------------------------------------------------
 \section*{Problem 1}
-Use the Hilbert Deductive System for First Order Logic (aka Predicate Calc.) to prove the following.
-a.
+Use the Hilbert Deductive System for First Order Logic (aka Predicate Calc.) to prove the following. You may use the Deductive Theorem, and other theorems proved in class or in previous handouts.\\
 
+a. (10\%) Prove that: $\forall_{x}\forall_{y}A \rightarrow \forall_{y}\forall_{x}$
 \pagebreak
+
+% ---------------------------------------------------------------
+% -------------------------- PROBLEM 2 --------------------------
+% ---------------------------------------------------------------
+
+\section*{Problem 2}
+Represent the following four premises and the conclusion in Propositional Calculus. \emph{Employ in your representation only the four propositional variables indicated below.} Then \emph{use resolution} to prove that the conclusion indeed soundly follows from the premises. Clearly show/explain all steps involved.\\
+
+\textbf{Premises:}
+
+\emph{Politicians attend the quarterly meetings.}
+
+\emph{Non-politicians attend the annual meetings.}
+
+\emph{If one attends the quarterly or the annual meetings one is invited to the symposium.}\\
+
+\textbf{Conlusion:}\emph{ One gets invited to the Symposium}\\
+
+\textbf{Propositional Variables:}
+
+Politicians: $P$
+
+Attending Quarterly Meetings: $Q$
+
+Attending Annual Meetings: $A$
+
+Being invited to the Symposium: $S$\\
+
+\solution\\
+
+\emph{Politicians attend the quarterly meetings.}
+
+$\forall_{x}(P(x) \rightarrow Q(x))$\\
+
+
+\emph{Non-politicians attend the annual meetings.}
+
+$\forall_{x}(\neg{P(x)} \rightarrow A(x))$\\
+
+
+\emph{If one attends the quarterly or the annual meetings one is invited to the symposium.}
+
+$\forall_{x}((Q(x) \vee A(x)) \rightarrow S(x))$\\
+
+\emph{Conlusion: One gets invited to the Symposium}
+
+$\exists_{x}(S(x))$\\
+\pagebreak
+
+% ---------------------------------------------------------------
+% -------------------------- PROBLEM 3 --------------------------
+% ---------------------------------------------------------------
 \section*{Problem 3}
 Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show that the following set of propositional clauses is unsatisfiable. Show every step of the procedure and clearly indicate which clauses and literals are being resolved, eliminated and/or added in each step.\\
 
@@ -36,9 +91,10 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
 \noindent
 \solution\\
 
+
 1. No trivial or literal clauses found.\\
 
-2. Resolve for $p$ by resolving clauses $<1, 4>, <1, 8>, <7, 4>, <7, 8>$:
+2. Resolve for $p$ by resolving clauses $\text{\textless}1, 4\text{\textgreater}, \text{\textless}1, 8\text{\textgreater}, \text{\textless}7, 4\text{\textgreater}, \text{\textless}7, 8\text{\textgreater}$:
 
 \small{$\{\{\neg{r}, o\}_{14};\ \{\neg{r}, q, r\}_{18}; \{s, \neg{o}, o\}_{74}; \{s, \neg{o}, q, r\}_{78}; \{q, \neg{r}\}_{2};\ \{q, \neg{s}\}_{3}; \{\neg{q}, \neg{o}\}_{5};\ \{\neg{q}, r, o\}_{6}; \{q, r, s, o\}_{9}\}$\}\\
 
@@ -48,7 +104,7 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
     $\{\{\neg{r}, o\}_{14}; \{s, \neg{o}, q, r\}_{78}; \{q, \neg{r}\}_{2};\ \{q, \neg{s}\}_{3}; \{\neg{q}, \neg{o}\}_{5};\ \{\neg{q}, r, o\}_{6}; \{q, r, s, o\}_{9}\}$\
 }\\
 
-4. Resolve for $r$ by resolving clauses $<78, 14>, <78, 2>, <6, 14>, <6, 2>, <9, 14>, <9, 2>$:
+4. Resolve for $r$ by resolving clauses $\text{\textless}78, 14\text{\textgreater}, \text{\textless}78, 2\text{\textgreater}, \text{\textless}6, 14\text{\textgreater}, \text{\textless}6, 2\text{\textgreater}, \text{\textless}9, 14\text{\textgreater}, \text{\textless}9, 2\text{\textgreater}$:
 
 \small{
     $\{
@@ -75,7 +131,7 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
     \}$
 }\\
 
-6. Resolve for $o$ by resolving clauses $<2, 1>, <2, 5>, <3, 1>, <3, 5>$:
+6. Resolve for $o$ by resolving clauses $\text{\textless}2, 1\text{\textgreater}, \text{\textless}2, 5\text{\textgreater}, \text{\textless}3, 1\text{\textgreater}, \text{\textless}3, 5\text{\textgreater}$:
 
 \small{
     $\{
@@ -97,7 +153,7 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
     \}$
 }\\
 
-8. Resolve for $q$ by resolving clauses $<2, 1>, <3, 1>$
+8. Resolve for $q$ by resolving clauses $\text{\textless}2, 1\text{\textgreater}, \text{\textless}3, 1\text{\textgreater}$
 
 
 \small{
@@ -107,7 +163,7 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
     \}$
 }\\
 
-9. Resolve for $s$ by resolving clauses $<21, 31>$
+9. Resolve for $s$ by resolving clauses $\text{\textless}21, 31\text{\textgreater}$
 
 \small{
     $\{
