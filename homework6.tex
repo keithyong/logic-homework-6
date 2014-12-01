@@ -1,12 +1,19 @@
 \documentclass{article}
-\usepackage{amssymb,amsmath,amsthm}
-
+\usepackage{amssymb,amsmath,amsthm} % Special Math Symbols
+\usepackage{tabto}                  % Tabbing package
+\usepackage{lmodern}                % Use Latin Modern font
 % Write out Solution in a nice format
 \newcommand{\solution}{\textbf{\large Solution}}
+
+% Tab command 1
+\newcommand{\tOne}{7.5cm}
 
 % Don't indent on start of new paragraph
 \setlength{\parindent}{0pt}
 
+% +-------------------------------------------------------------+
+% |                        TITLE PAGE                           |
+% +-------------------------------------------------------------+
 \title{
 	\vspace{2in}
 	\textmd{\textbf{CISC304: Homework 6}}\\
@@ -20,18 +27,53 @@
 \maketitle
 \pagebreak
 
-% ---------------------------------------------------------------
-% -------------------------- PROBLEM 1 --------------------------
-% ---------------------------------------------------------------
+% +-------------------------------------------------------------+
+% |                          PROBLEM 1                          |
+% +-------------------------------------------------------------+
 \section*{Problem 1}
 Use the Hilbert Deductive System for First Order Logic (aka Predicate Calc.) to prove the following. You may use the Deductive Theorem, and other theorems proved in class or in previous handouts.\\
 
-a. (10\%) Prove that: $\forall_{x}\forall_{y}A \rightarrow \forall_{y}\forall_{x}$
+a. (10\%) Prove that: $\forall_{x}\forall_{y}A \rightarrow \forall_{y}\forall_{x}A$\\
+
+b. (10\%) Add to the Hilbert Proof System the generalization Rule version of Ax. 6: 
+
+\begin{center}
+$\dfrac{U \vdash B(a)}{U \vdash \forall_xB(x)}$
+\end{center}
+
+where $U$ is a set of WFFs(can be empty), $B$ is a WFF, and $a$ does not appear in $U$. For a WFF $A$ that doesnot contain $x$ as a free variable, prove that:
+
+\begin{center}
+$\forall_x(A \rightarrow B(x)) \leftrightarrow (A \rightarrow \forall_xB(x))$.\\
+\end{center}
+
+\textbf{\large{Solution 1a.}}
+
+Prove that: $\forall_{x}\forall_{y}A \rightarrow \forall_{y}\forall_{x}A$
+
+1. $A \rightarrow \forall_xA$ \tabto{\tOne}(Axiom 6)
+
+2. $\forall_xA \rightarrow \forall_y\forall_xA$ \tabto{\tOne}(Axiom 6)
+
+3. $\forall_x\forall_yA \rightarrow \forall_yA$ \tabto{\tOne}(Axiom 4 with $t = y$)
+
+4. $(A \rightarrow \forall_xA) \rightarrow (\forall_y(A \rightarrow \forall_xA) \rightarrow (A \rightarrow \forall_xA))$ \tabto{\tOne}(Axiom 1)
+
+5. $\forall_y(A \rightarrow \forall_xA) \rightarrow (A \rightarrow \forall_x A)$ \tabto{\tOne}(MP, 1, 4)
+
+6. $\forall_y(A \rightarrow \forall_xA)$\footnote{Using Axiom 6 seems more trivial here, but Axiom 6 will give us $\forall_yA \rightarrow \forall_x\forall_yA$. We want to get $\forall_yA \rightarrow \forall_y\forall_xA$.}\tabto{\tOne}(A, ($\forall_xA) \rightarrow C \vdash \forall_xC$ In Class)
+
+7. $\forall_yA \rightarrow \forall_y\forall_xA$ \tabto{\tOne}(Axiom 5)
+
+8. $\forall_x\forall_yA \rightarrow \forall_y\forall_xA$ \tabto{\tOne}(Syllogism Rule 3, 7)
+
+$\blacksquare$
+
 \pagebreak
 
-% ---------------------------------------------------------------
-% -------------------------- PROBLEM 2 --------------------------
-% ---------------------------------------------------------------
+% +-------------------------------------------------------------+
+% |                          PROBLEM 2                          |
+% +-------------------------------------------------------------+
 
 \section*{Problem 2}
 Represent the following four premises and the conclusion in Propositional Calculus. \emph{Employ in your representation only the four propositional variables indicated below.} Then \emph{use resolution} to prove that the conclusion indeed soundly follows from the premises. Clearly show/explain all steps involved.\\
@@ -56,30 +98,50 @@ Attending Annual Meetings: $A$
 
 Being invited to the Symposium: $S$\\
 
-\solution\\
+\solution
 
-\emph{Politicians attend the quarterly meetings.}
+Premises (in respective order): $P \rightarrow Q$, $\neg{P} \rightarrow A$, $(Q \vee A) \rightarrow S$
 
-$\forall_{x}(P(x) \rightarrow Q(x))$\\
+Conclusion: $S$\\
 
+To prove that the conclusion soundly follows from the premise, we must show that
 
-\emph{Non-politicians attend the annual meetings.}
+\begin{center}
+$(P \rightarrow Q) \wedge (\neg{P} \rightarrow A) \wedge ((Q \vee A) \rightarrow S) \wedge \neg{S}$
+\end{center}
 
-$\forall_{x}(\neg{P(x)} \rightarrow A(x))$\\
+is unstatisfiable.\\
 
+1. $(\neg{P} \vee Q) \wedge (P \vee A) \wedge (\neg(Q \vee A) \vee S) \wedge \neg{S}$ \tabto{\tOne}(Break $\rightarrow$'s)
 
-\emph{If one attends the quarterly or the annual meetings one is invited to the symposium.}
+2. $(\neg{P} \vee Q) \wedge (P \vee A) \wedge ((\neg{Q} \wedge \neg{A}) \vee S) \wedge \neg{S}$ \tabto{\tOne}(Apply De-Morgan's Law)
 
-$\forall_{x}((Q(x) \vee A(x)) \rightarrow S(x))$\\
+3. $(\neg{P} \vee Q) \wedge (P \vee A) \wedge (S \vee \neg{Q}) \wedge (S \vee \neg{A}) \wedge \neg{S}$ (Distribute until CNF)
 
-\emph{Conlusion: One gets invited to the Symposium}
+4. $\{\{\neg{P}, Q\}, \{P, A\}, \{S, \neg{Q}\}, \{S, \neg{A}\}, \{\neg{S}\}\}$ \tabto{\tOne}(Write in Clausal Normal Form)\\
 
-$\exists_{x}(S(x))$\\
+Resolve using the Davis-Putnam procedure:
+
+$\{\{\neg{P}, Q\}_1, \{P, A\}_2, \{S, \neg{Q}\}_3, \{S, \neg{A}\}_4, \{\neg{S}\}_5\}$
+
+1. $\{\{\neg{P}, Q\}_1, \{P, A\}_2, \{\neg{Q}\}_{35}, \{\neg{A}\}_{45}\}$ \tabto{\tOne}(Resolve S $<3, 5>, <4, 5>$)
+
+2. $\{\{\neg{P}, Q\}_1, \{P, A\}_2, \{\neg{Q}\}_{35}, \{\neg{A}\}_{45}\}$ \tabto{\tOne}(Resolve Q $<1, 35>$)
+
+3. $\{\{\neg{P}\}_1, \{P, A\}_2, \{\neg{A}\}_3\}$ \tabto{\tOne}(Resolve P $<1, 2>$)
+
+4. $\{\{A\}_{12}, \{\neg{A}\}_3\}$ \tabto{\tOne}(Resolve A $<12, 3>$)
+
+5. $\{\square\}$
+
+$
+\blacksquare
+$
 \pagebreak
 
-% ---------------------------------------------------------------
-% -------------------------- PROBLEM 3 --------------------------
-% ---------------------------------------------------------------
+% +-------------------------------------------------------------+
+% |                          PROBLEM 3                          |
+% +-------------------------------------------------------------+
 \section*{Problem 3}
 Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show that the following set of propositional clauses is unsatisfiable. Show every step of the procedure and clearly indicate which clauses and literals are being resolved, eliminated and/or added in each step.\\
 
@@ -89,7 +151,7 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
 }\\
 
 \noindent
-\solution\\
+\solution
 
 
 1. No trivial or literal clauses found.\\
@@ -174,4 +236,235 @@ Use \emph{Resolution}, utilizing the \textbf{Davis-Putnam procedure}, to show th
 $
 \blacksquare
 $
+\pagebreak
+% +-------------------------------------------------------------+
+% |                          PROBLEM 4                          |
+% +-------------------------------------------------------------+
+\section*{Problem 4}
+
+Transform each of the following formulae into \textbf{Clausal Form.} Clearly indicate the main stages of the transformation.\\
+
+a. $\forall_x(P(x) \vee Q(x)) \rightarrow (\forall_xP(x) \vee \exists_xQ(x))$
+
+b. (from Ben Ari 9.1) $\forall_x\forall_y(\exists_zP(z) \wedge \exists_u(Q(x, u) \rightarrow \exists_vQ(y, v)))$
+
+c. (from Ben Ari 9.1) $\exists_x(\neg\exists_yP(y) \rightarrow \exists_z(Q(z) \rightarrow R(x))$\\
+
+\textbf{\large{Solution 4a.}}
+
+$\forall_x(P(x) \vee Q(x)) \rightarrow (\forall_xP(x) \vee \exists_xQ(x))$\\
+
+1. Rename bound variables
+
+$\forall_x(P(x) \vee Q(x)) \rightarrow (\forall_yP(y) \vee \exists_zQ(z))$\\
+
+2. Eliminate all binary boolean operators other than $\vee$ and $\wedge$
+
+$\neg\forall_x(P(x) \vee Q(x)) \vee (\forall_yP(y) \vee \exists_zQ(z))$\\
+
+3. Push negations inwards until they apply to atomic formulae only
+
+$\exists_x\neg(P(x) \vee Q(x)) \vee (\forall_yP(y) \vee \exists_zQ(z))$ \tabto{\tOne}($\neg{\forall_{x}A(x)} \equiv \exists_{x} \neg{A(x)}$)
+
+$\exists_x(\neg{P(x)} \wedge \neg{Q(x))} \vee (\forall_yP(y) \vee \exists_zQ(z))$ \tabto{\tOne}(De-Morgan's Law)\\
+
+4. Extract quantifiers from the matrix into the prefix
+
+$\exists_x\forall_y((\neg{P(x)} \wedge \neg{Q(x))} \vee P(y) \vee \exists_zQ(z))$
+
+$\exists_x\forall_y\exists_z((\neg{P(x)} \wedge \neg{Q(x))} \vee P(y) \vee Q(z))$\\
+
+5. Convert the matrix into conjunctive normal form.
+
+$\exists_x\forall_y\exists_z((\neg{P(x)} \vee P(y) \vee Q(z)) \wedge (\neg{Q(x)} \vee P(y) \vee Q(z)))$\\
+
+5. Remove existential quantifiers by \emph{Skolemization}.
+
+$\forall_y\exists_z((\neg{P(a)} \vee P(y) \vee Q(z)) \wedge (\neg{Q(a)} \vee P(y) \vee Q(z)))$ \tabto{8.5cm}(Replaced $x$ with $a$)
+
+$\forall_y((\neg{P(a)} \vee P(y) \vee Q(f(y))) \wedge (\neg{Q(a)} \vee P(y) \vee Q(f(y))))$ \tabto{8.5cm}(Replaced $z$ with $f(y)$)\\
+
+6. Drop universal quantifiers, and write it in clausal normal form
+
+$\{\{\neg{P(a)}, P(y), Q(f(y))\}, \{\neg{Q(a)}, P(y), Q(f(y))\}\}$
+
+\pagebreak
+
+\textbf{\large{Solution 4b.}}
+
+$\forall_x\forall_y(\exists_zP(z) \wedge \exists_u(Q(x, u) \rightarrow \exists_vQ(y, v)))$\\
+
+1. Rename bound variables
+
+(no change)\\
+
+2. Eliminate all binary boolean operators other than $\vee$ and $\wedge$
+
+$\forall_x\forall_y(\exists_zP(z) \wedge \exists_u(\neg{Q(x, u)} \vee \exists_vQ(y, v)))$\\
+
+3. Push negations inwards until they apply to atomic formulae only
+
+(no change)\\
+
+4. Extract quantifiers from the matrix into the prefix
+
+$\forall_x\forall_y\exists_z(P(z) \wedge \exists_u(\neg{Q(x, u)} \vee \exists_vQ(y, v)))$
+
+$\forall_x\forall_y\exists_z\exists_u(P(z) \wedge (\neg{Q(x, u)} \vee \exists_vQ(y, v)))$
+
+$\forall_x\forall_y\exists_z\exists_u\exists_v(P(z) \wedge (\neg{Q(x, u)} \vee Q(y, v)))$\\
+
+5. Convert the matrix into conjunctive normal form.
+
+(already in conjunctive normal form)\\
+
+5. Remove existential quantifiers by \emph{Skolemization}.
+
+$\forall_x\forall_y\exists_u\exists_v(P(f(x, y)) \wedge (\neg{Q(x, u)} \vee Q(y, v)))$ \tabto{\tOne}(Replaced $z$ with $f(x, y)$)
+
+$\forall_x\forall_y\exists_v(P(f(x, y)) \wedge (\neg{Q(x, g(x, y))} \vee Q(y, v)))$ \tabto{\tOne}(Replaced $u$ with $g(x, y)$)
+
+$\forall_x\forall_y(P(f(x, y)) \wedge (\neg{Q(x, g(x, y))} \vee Q(y, h(x, y))))$ \tabto{\tOne}(Replaced $u$ with $h(x, y)$)\\
+
+6. Drop universal quantifiers, and write it in clausal normal form
+
+$\{\{P(f(x, y))\}, \{\neg{Q(x, g(x, y))}, Q(y, h(x, y))\}\}$\\
+
+
+\pagebreak
+
+\textbf{\large{Solution 4c.}}
+
+$\exists_x(\neg\exists_yP(y) \rightarrow \exists_z(Q(z) \rightarrow R(x))$\\
+
+1. Rename bound variables so that no variables appear in two quantifiers
+
+(No changes)\\
+
+2. Eliminate all binary boolean operators other than $\vee$ and $\wedge$
+
+$\exists_x(\exists_yP(y) \vee \exists_z(Q(z) \rightarrow R(x))$ \tabto{\tOne}(Elim $\rightarrow$)
+
+$\exists_x(\exists_yP(y) \vee \exists_z(\neg{Q(z)} \vee R(x))$ \tabto{\tOne}(Elim $\rightarrow$)\\
+
+3. Push negations inwards until they apply to atomic formulae only
+
+(No changes)\\
+
+4. Extract quantifiers from the matrix into the prefix
+
+$\exists_x\exists_y(P(y) \vee \exists_z(\neg{Q(z)} \vee R(x))$ \tabto{\tOne}(Extracted $\exists_y$)
+
+$\exists_x\exists_y\exists_z(P(y) \vee (\neg{Q(z)} \vee R(x))$ \tabto{\tOne}(Extracted $\exists_z$)\\
+
+5. Convert the matrix into conjunctive normal form.
+
+(No changes)\\
+
+5. Remove existential quantifiers by \emph{Skolemization}.
+
+$\exists_y\exists_z(P(y) \vee (\neg{Q(z)} \vee R(a))$ \tabto{\tOne}(Replaced $x$ with $a$)
+
+$\exists_z(P(b) \vee (\neg{Q(z)} \vee R(a))$ \tabto{\tOne}(Replaced $y$ with $b$)
+
+$P(b) \vee \neg{Q(c)} \vee R(a)$ \tabto{\tOne}(Replaced $z$ with $c$)\\
+
+6. Drop universal quantifiers, and write it in clausal normal form
+
+$\{\{P(b), \neg{Q(c)}, R(a)\}\}$
+
+\pagebreak
+% +-------------------------------------------------------------+
+% |                          PROBLEM 5                          |
+% +-------------------------------------------------------------+
+
+\pagebreak
+% +-------------------------------------------------------------+
+% |                          PROBLEM 7                          |
+% +-------------------------------------------------------------+
+\section*{Problem 7}
+
+Use resolution to prove that the following formulae are valid. Show all stages of your reasoning.
+
+a. $\exists_x\forall_y(R(y, x, g(y, x))) \rightarrow \exists_x\forall_y\exists_z(R(y, x, z))$\\
+
+b. $\forall_x(P(x) \rightarrow Q(x)) \vDash \forall_x(\exists_y(P(y) \wedge R(x, y)) \rightarrow \exists_y(Q(y) \wedge R(x, y)))$\\
+
+\textbf{\large{Solution 7a.}}
+
+We must show that $\neg(\exists_x\forall_y(R(y, x, g(y, x))) \rightarrow \exists_x\forall_y\exists_z(R(y, x, z)))$ is unsatisfiable.\\
+
+1. $\neg(\exists_x\forall_y(R(y, x, g(y, x))) \rightarrow \exists_w\forall_u\exists_v(R(u, w, v)))$ \tabto{\tOne}(Rename variables)\\
+
+2. $\exists_x\forall_y(R(y, x, g(y, x))) \wedge \neg\exists_w\forall_u\exists_v(R(u, w, v))$ \tabto{\tOne}(Break $\neg(A \rightarrow B)$)\\
+
+3. $\exists_x\forall_y(R(y, x, g(y, x))) \wedge \forall_w\exists_u\forall_v(\neg{R}(u, w, v))$ \tabto{\tOne}(Push negations in)\\
+
+4. $\exists_x\forall_y\forall_w\exists_u\forall_v(R(y, x, g(y, x)) \wedge \neg{R}(u, w, v))$ \tabto{\tOne}(Pull quantifiers out to prefix)\\
+
+5. $\forall_y\forall_w\forall_v(R(y, a, g(y, a)) \wedge \neg{R}(f(y, w), w, v))$ \tabto{\tOne}(Skolemize: $x = a$, $u = f(y, w)$)\\
+
+6. $\{\{R(y, a, g(y, a))\}_1, \{\neg{R}(f(y, w), w, v)\}_2\}$ \tabto{\tOne}(Delete $\forall$'s, write in clausal form)\\
+
+7. Unify with $\theta = [y/f(y, w), a/w, v/g(y, a)]$:
+
+$\{\{R(f(y, w), w, g(y, a))\}_1, \{\neg{R}(f(y, w), w, g(y, a))\}_2\}$\\
+
+8. $\{\square\}$ \tabto{\tOne}(Resolve 1, 2)\\
+
+$\blacksquare$
+
+\pagebreak
+
+\textbf{\large{Solution 7b.}}
+
+To show that 
+
+\begin{center}
+$\forall_x(P(x) \rightarrow Q(x)) \vDash \forall_x(\exists_y(P(y) \wedge R(x, y)) \rightarrow \exists_y(Q(y) \wedge R(x, y)))$
+\end{center}
+
+is valid, we must show that 
+
+\begin{center}
+$\forall_x(P(x) \rightarrow Q(x)) \wedge \neg\forall_x(\exists_y(P(y) \wedge R(x, y)) \rightarrow \exists_y(Q(y) \wedge R(x, y)))$ 
+\end{center}
+
+is unsatisfiable.\\
+
+1. Rename variables that appear in more than one quantifiers
+
+$\forall_x(P(x) \rightarrow Q(x)) \wedge \neg\forall_u(\exists_y(P(y) \wedge R(u, y)) \rightarrow \exists_v(Q(v) \wedge R(u, v)))$ \\
+
+2. Break $\rightarrow$'s
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \neg\forall_u(\neg\exists_y(P(y) \wedge R(u, y)) \vee \exists_v(Q(v) \wedge R(u, v)))$ \\
+
+3. Push in negations 
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \exists_u\neg(\neg\exists_y(P(y) \wedge R(u, y)) \vee \exists_v(Q(v) \wedge R(u, v)))$
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \exists_u\neg(\forall_y\neg(P(y) \wedge R(u, y)) \vee \exists_v(Q(v) \wedge R(u, v)))$ 
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \exists_u(\neg\forall_y\neg(P(y) \wedge R(u, y)) \wedge \neg\exists_v(Q(v) \wedge R(u, v)))$
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \exists_u(\exists_y(P(y) \wedge R(u, y)) \wedge \neg\exists_v(Q(v) \wedge R(u, v)))$
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \exists_u(\exists_y(P(y) \wedge R(u, y)) \wedge \forall_v\neg(Q(v) \wedge R(u, v)))$
+
+$\forall_x(\neg{P}(x) \vee Q(x)) \wedge \exists_u(\exists_y(P(y) \wedge R(u, y)) \wedge \forall_v(\neg{Q(v)} \vee \neg{R(u, v)}))$\\
+
+4. Extract quantifiers out into prefix
+
+$\forall_x\exists_u\exists_y\forall_v((\neg{P}(x) \vee Q(x)) \wedge (P(y) \wedge R(u, y)) \wedge (\neg{Q(v)} \vee \neg{R(u, v)}))$\\
+
+5. Skolemize to remove existential quantifiers: $u = f(x), y = g(x), v = a$
+
+$\forall_x((\neg{P}(x) \vee Q(x)) \wedge (P(g(x)) \wedge R(f(x), g(x))) \wedge (\neg{Q(a)} \vee \neg{R(f(x), a)}))$\\
+
+6. Delete $\forall$'s, and write in clausal normal form
+
+$\{\{\neg{P(x)}, Q(x)\}_1, \{P(g(x)), R(f(x), g(x))\}_2, \{\neg{Q(a)}, \neg{R(f(x), a)}\}_3\}$
+
 \end{document}
+
