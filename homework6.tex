@@ -380,6 +380,34 @@ $\{\{P(b), \neg{Q(c)}, R(a)\}\}$
 
 \pagebreak
 % +-------------------------------------------------------------+
+% |                          PROBLEM 6                          |
+% +-------------------------------------------------------------+
+\section*{Problem 6}
+
+Translate the three premises and conclusion into sentences in the Predicate Calculus, using the predicate symbols provided below. Then use resolution to prove that the conclusion indeed follows from the premises.\\
+
+$W(x) x$ is a walrus; $C(x) x$ is a carpenter; $B(x) x$ lives in the bay; $M(x) x$ likes the mountains\\
+
+\textbf{Premises}
+\emph{No Walrus Likes the Mountains.}
+\emph{All carpenters likes the Mountains.}
+\emph{Everyone who lives in the bay is a walrus.}
+
+\textbf{Conclusion:} \emph{Those who live in the bay are not carpenters}\\
+
+\solution
+
+\emph{No Walrus Likes the Mountains.} \tabto{\tOne}$\forall_x\neg(W(x) \rightarrow M(x))$
+
+\emph{All carpenters likes the Mountains.} \tabto{\tOne}$\forall_x(C(x) \rightarrow M(x))$
+
+\emph{Everyone who lives in the bay is a walrus.} \tabto{\tOne}$\forall_x(B(x) \rightarrow W(x))$
+
+
+
+
+\pagebreak
+% +-------------------------------------------------------------+
 % |                          PROBLEM 7                          |
 % +-------------------------------------------------------------+
 \section*{Problem 7}
@@ -464,7 +492,17 @@ $\forall_x((\neg{P}(x) \vee Q(x)) \wedge (P(g(x)) \wedge R(f(x), g(x))) \wedge (
 
 6. Delete $\forall$'s, and write in clausal normal form
 
-$\{\{\neg{P(x)}, Q(x)\}_1, \{P(g(x)), R(f(x), g(x))\}_2, \{\neg{Q(a)}, \neg{R(f(x), a)}\}_3\}$
+$\{\{\neg{P(x)}, Q(x)\}_1, \{P(g(x)), R(f(x), g(x))\}_2, \{\neg{Q(a)}, \neg{R(f(x), a)}\}_3\}$\\
+
+7. Run Resolution to determine unsatisfiability
+
+$\{P(g(x)), \neg{Q(g(x))}\}_4$ \tabto{\tOne}(Resolve R $<2, 3>$ sub. $[a/g(x)]$)
+
+$\{\neg{P(g(x))}, P(g(x))\}_5$ \tabto{\tOne}(Resolve Q $<1, 4>$ sub. $[a/g(x)]$)
+
+$\{\square\}_5$ \tabto{\tOne}(Resolve P $<1, 5>$)
+
+$\blacksquare$
 
 \end{document}
 
